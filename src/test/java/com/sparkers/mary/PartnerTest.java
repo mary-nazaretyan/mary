@@ -81,6 +81,26 @@ public class PartnerTest {
     }
 
     @Test
+    void shouldNotAddPartner(@Autowired TestRestTemplate restTemplate) {
+        //given
+        final PartnerDTO partnerDTO = new PartnerDTO();
+        partnerDTO.setReference("ref12");
+        partnerDTO.setName("");
+        partnerDTO.setExpirationTime(new Date());
+        partnerDTO.setLocale(Locale.CANADA);
+
+        //when
+        final ResponseEntity<PartnerDTO> responseEntity =
+            restTemplate.postForEntity("/api/partners", partnerDTO, PartnerDTO.class);
+        final PartnerDTO partner = responseEntity.getBody();
+
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        assertThat(partner).isNotNull();
+        assertThat(partner.getId()).isNull();
+    }
+
+    @Test
     void shouldUpdatePartner(@Autowired TestRestTemplate restTemplate) {
         //given
         final PartnerDTO partnerDTO = new PartnerDTO();

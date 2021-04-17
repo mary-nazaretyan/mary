@@ -34,6 +34,7 @@ public class GlobalExceptionHandler {
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseBody
     public ApiError handleExceptions(MethodArgumentNotValidException e) {
         log.error("handleExceptions", e);
         return new ApiError(HttpStatus.BAD_REQUEST.value(), e.getMessage());
